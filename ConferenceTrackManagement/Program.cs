@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConferenceTrackManagementCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,12 +40,12 @@ namespace ConferenceTrackManagement
 
         private static void GenerateTracks(Collection<Talk> allTalks)
         {
-            var track1 = NewMethod(allTalks);
-
-            foreach (Track item in track1)
+            var tracks = NewMethod(allTalks);
+            for (int i = 0; i < tracks.Count; i++)
             {
-                Console.WriteLine(item.ToString());
-                Console.WriteLine("=============================================");
+                Console.WriteLine(string.Format("Track {0}:", (i + 1).ToString()));
+                Console.WriteLine(tracks[i].ToString());
+                Console.WriteLine("");
             }
             Console.Read();
         }
@@ -82,14 +83,14 @@ namespace ConferenceTrackManagement
                     if (track.MorningSession.Talks.Count == 0)
                     {
                         currentTalk.Start = track.MorningSession.Start;
-                        currentTalk.End = currentTalk.Start + currentTalk.Duration;
+                        currentTalk.End = currentTalk.Start.Add(currentTalk.Duration);
                         track.MorningSession.Talks.Add(currentTalk);
                     }
                     else
                     {
                         Talk lastTalkInTrack = track.MorningSession.Talks.Last();
                         currentTalk.Start = lastTalkInTrack.End;
-                        currentTalk.End = currentTalk.Start + currentTalk.Duration;
+                        currentTalk.End = currentTalk.Start.Add(currentTalk.Duration);
                         if (track.MorningSession.IsValid(currentTalk))
                         {
                             track.MorningSession.Talks.Add(currentTalk);
@@ -99,8 +100,8 @@ namespace ConferenceTrackManagement
                             if (mightNeedToBeRemovedTalk == null)
                             {
                                 mightNeedToBeRemovedTalk = currentTalk;
-                                currentTalk.Start = 0;
-                                currentTalk.End = 0;
+                                currentTalk.Start = default(TimeSpan);
+                                currentTalk.End = default(TimeSpan);
                                 queue.Enqueue(currentTalk);
                                 continue;
                             }
@@ -108,14 +109,14 @@ namespace ConferenceTrackManagement
                             if (mightNeedToBeRemovedTalk == currentTalk)
                             {
                                 Talk lastTalk = track.MorningSession.Talks.Last();
-                                lastTalk.Start = 0;
-                                lastTalk.End = 0;
+                                lastTalk.Start = default(TimeSpan);
+                                lastTalk.End = default(TimeSpan);
                                 track.MorningSession.Talks.RemoveAt(track.MorningSession.Talks.Count - 1);
                                 queue.Enqueue(lastTalk);
                             }
 
-                            currentTalk.Start = 0;
-                            currentTalk.End = 0;
+                            currentTalk.Start = default(TimeSpan);
+                            currentTalk.End = default(TimeSpan);
                             queue.Enqueue(currentTalk);
                         }
                     }
@@ -139,8 +140,8 @@ namespace ConferenceTrackManagement
                         }
                         else
                         {
-                            currentTalk.Start = 0;
-                            currentTalk.End = 0;
+                            currentTalk.Start = default(TimeSpan);
+                            currentTalk.End = default(TimeSpan);
                             queue.Enqueue(currentTalk);
                         }
                     }
@@ -159,7 +160,15 @@ namespace ConferenceTrackManagement
                 var currentTrack = allTracks.FirstOrDefault(t => !t.IsFull);
                 currentTalk.Start = currentTrack.AfternoonSession.Talks.Last().End;
                 currentTrack.AfternoonSession.Talks.Add(currentTalk);
-                currentTrack.NetworkEvent.Start = 17;
+                currentTrack.NetworkEvent.Start = TimeSpan.FromHours(17);
+            }
+
+            foreach (var tempTrack in allTracks)
+            {
+                if (tempTrack.NetworkEvent.Start.Equals(default(TimeSpan)))
+                {
+                    tempTrack.NetworkEvent.Start = tempTrack.AfternoonSession.Talks.Last().End;
+                }
             }
 
             return allTracks;

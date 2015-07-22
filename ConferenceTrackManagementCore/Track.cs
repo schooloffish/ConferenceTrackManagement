@@ -1,30 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConferenceTrackManagement
+namespace ConferenceTrackManagementCore
 {
     public class Track
     {
         private AfternoonSession afternoonSession;
         private MorningSession morningSession;
-        private Talk lunch;
-        private Talk networkEvent;       
-        private double start;
-        private double end;
+        private Lunch lunch;
+        private NetworkingEvent networkEvent;
+        private TimeSpan start;
+        private TimeSpan end;
 
         public Track()
         {
-            this.start = 9;
-            this.end = 17;
+            this.start = TimeSpan.FromHours(9);
+            this.end = TimeSpan.FromHours(17);
             this.morningSession = new MorningSession();
             this.afternoonSession = new AfternoonSession();
-            this.lunch = new Talk("lunch", 1);
-            this.lunch.Start = 12.0;
-            this.networkEvent = new Talk("Networking Event", 0);
+            this.lunch = new Lunch();
+            this.networkEvent = new NetworkingEvent();
         }
 
         public AfternoonSession AfternoonSession
@@ -39,11 +34,6 @@ namespace ConferenceTrackManagement
             set { morningSession = value; }
         }
 
-        public Talk Lunch
-        {
-            get { return lunch; }
-        }
-
         public bool IsFull
         {
             get
@@ -52,19 +42,19 @@ namespace ConferenceTrackManagement
             }
         }
 
-        public double Start
+        public TimeSpan Start
         {
             get { return start; }
             set { start = value; }
         }
 
-        public double End
+        public TimeSpan End
         {
             get { return end; }
             set { end = value; }
         }
 
-        public Talk NetworkEvent
+        public NetworkingEvent NetworkEvent
         {
             get { return networkEvent; }
         }
@@ -73,10 +63,10 @@ namespace ConferenceTrackManagement
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(MorningSession.ToString());
-            sb.Append(lunch.ToString());
-            sb.AppendLine(AfternoonSession.ToString());
-            sb.AppendLine(networkEvent.ToString());
+            sb.Append(MorningSession.ToString());
+            sb.AppendLine(lunch.ToString());
+            sb.Append(AfternoonSession.ToString());
+            sb.Append(networkEvent.ToString());
 
             return sb.ToString();
         }

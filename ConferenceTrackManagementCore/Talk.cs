@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConferenceTrackManagement
+namespace ConferenceTrackManagementCore
 {
     public class Talk
     {
-        private double duration;
-        private double start;
-        private double end;
+        private TimeSpan duration;
+        private TimeSpan start;
+        private TimeSpan end;
         private string title;
         private bool isLightning;
-        public bool isProcessed;
 
         public bool IsLightning
         {
@@ -25,40 +22,40 @@ namespace ConferenceTrackManagement
         {
             var tempArray = proposal.Split(' ').ToList();
             string duration = tempArray.Last();
-            double tempDuration = 0;
+            TimeSpan tempDuration = default(TimeSpan);
             tempArray.RemoveAt(tempArray.Count - 1);
             string tempTitle = string.Join(" ", tempArray);
             bool tempIsLightning = duration == "lightning";
             if (tempIsLightning)
             {
-                tempDuration = 5;
+                tempDuration = TimeSpan.FromMinutes(5);
             }
             else
             {
-                tempDuration = double.Parse(duration.Replace("min", "")) / 60;
+                tempDuration = TimeSpan.FromMinutes(int.Parse(duration.Replace("min", "")));
             }
             return new Talk(tempTitle, tempDuration, tempIsLightning);
         }
 
-        public Talk(string title, double duration, bool isLightning = false)
+        public Talk(string title, TimeSpan duration, bool isLightning = false)
         {
             this.title = title;
             this.duration = duration;
             this.isLightning = isLightning;
         }
 
-        public double Duration
+        public TimeSpan Duration
         {
             get { return duration; }
         }
 
-        public double Start
+        public TimeSpan Start
         {
             get { return start; }
             set { start = value; }
         }
 
-        public double End
+        public TimeSpan End
         {
             get { return end; }
             set { end = value; }
@@ -72,15 +69,14 @@ namespace ConferenceTrackManagement
         public override string ToString()
         {
             return isLightning ? string.Format("{0} {1} lightning", GetStartTimeForDisplay(start), title)
-                : string.Format("{0} {1} {2}min", GetStartTimeForDisplay(start), title, duration * 60);
+                : string.Format("{0} {1} {2}min", GetStartTimeForDisplay(start), title, duration.Minutes);
         }
 
-        private string GetStartTimeForDisplay(double start)
+        public string GetStartTimeForDisplay(TimeSpan start)
         {
-            double h = (int)start;
-            double m = (start - h) * 60;
+            DateTime time = DateTime.ParseExact(start.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture);
 
-            return string.Format("{0}:{1}", h, m);
+            return time.ToString("hh:mmtt", CultureInfo.CreateSpecificCulture("en-us"));
         }
     }
 }

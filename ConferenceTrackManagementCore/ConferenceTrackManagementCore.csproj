@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{56FE205E-82C2-4497-B08D-6229468D5628}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D0E55C72-BBCB-401E-9220-32BC491CA58B}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConferenceTrackManagement</RootNamespace>
-    <AssemblyName>ConferenceTrackManagement</AssemblyName>
+    <RootNamespace>ConferenceTrackManagementCore</RootNamespace>
+    <AssemblyName>ConferenceTrackManagementCore</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,22 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="AfternoonSession.cs" />
+    <Compile Include="Lunch.cs" />
+    <Compile Include="MorningSession.cs" />
+    <Compile Include="NetworkingEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Input.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConferenceTrackManagementCore\ConferenceTrackManagementCore.csproj">
-      <Project>{d0e55c72-bbcb-401e-9220-32bc491ca58b}</Project>
-      <Name>ConferenceTrackManagementCore</Name>
-    </ProjectReference>
+    <Compile Include="Session.cs" />
+    <Compile Include="Talk.cs" />
+    <Compile Include="Track.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
