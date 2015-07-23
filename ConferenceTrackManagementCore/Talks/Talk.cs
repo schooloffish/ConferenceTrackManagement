@@ -8,15 +8,8 @@ namespace ConferenceTrackManagementCore
     {
         private TimeSpan duration;
         private TimeSpan start;
-        private TimeSpan end;
         private string title;
-        private bool isLightning;
-
-        public bool IsLightning
-        {
-            get { return isLightning; }
-            set { isLightning = value; }
-        }
+        private bool isLightning;       
 
         public static Talk Init(string proposal)
         {
@@ -57,8 +50,10 @@ namespace ConferenceTrackManagementCore
 
         public TimeSpan End
         {
-            get { return end; }
-            set { end = value; }
+            get
+            {
+                return Start.Add(Duration);
+            }            
         }
 
         public string Title
@@ -66,10 +61,16 @@ namespace ConferenceTrackManagementCore
             get { return title; }
         }
 
+        public bool IsLightning
+        {
+            get { return isLightning; }
+            set { isLightning = value; }
+        }
+
         public override string ToString()
         {
             return isLightning ? string.Format("{0} {1} lightning", GetStartTimeForDisplay(start), title)
-                : string.Format("{0} {1} {2}min", GetStartTimeForDisplay(start), title, duration.Minutes);
+                : string.Format("{0} {1} {2}min", GetStartTimeForDisplay(start), title, duration.TotalMinutes);
         }
 
         public string GetStartTimeForDisplay(TimeSpan start)

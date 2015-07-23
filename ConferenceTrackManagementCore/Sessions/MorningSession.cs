@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 
 namespace ConferenceTrackManagementCore
 {
@@ -21,18 +20,6 @@ namespace ConferenceTrackManagementCore
         public override bool IsValid(Talk talk)
         {
             return talk.End <= this.End;
-        }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (var talk in Talks)
-            {
-                sb.AppendLine(talk.ToString());
-            }
-
-            return sb.ToString();
         }
     }
 }

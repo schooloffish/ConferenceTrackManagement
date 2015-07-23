@@ -1,10 +1,7 @@
 ﻿using ConferenceTrackManagementCore;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 
 namespace ConferenceTrackManagement
 {
@@ -34,144 +31,19 @@ namespace ConferenceTrackManagement
                     }
                 }
 
-                GenerateTracks(allTalks);
+                PrintTracks(allTalks);
             }
         }
 
-        private static void GenerateTracks(Collection<Talk> allTalks)
+        private static void PrintTracks(Collection<Talk> allTalks)
         {
-            var tracks = NewMethod(allTalks);
+            var tracks = Track.GenerateTracks(allTalks);
             for (int i = 0; i < tracks.Count; i++)
             {
                 Console.WriteLine(string.Format("Track {0}:", (i + 1).ToString()));
                 Console.WriteLine(tracks[i].ToString());
-                Console.WriteLine("");
             }
             Console.Read();
-        }
-
-        private static Collection<Track> NewMethod(Collection<Talk> allTalks)
-        {
-            Collection<Track> allTracks = new Collection<Track>();
-
-            Queue<Talk> queue = new Queue<Talk>();
-            foreach (var item in allTalks)
-            {
-                if (!item.IsLightning)
-                    queue.Enqueue(item);
-            }
-
-            Track track = null;
-            Talk mightNeedToBeRemovedTalk = null;
-            while (queue.Count > 0)
-            {
-                if (track != null && track.IsFull)
-                {
-                    track = null;
-                }
-
-                if (track == null)
-                {
-                    track = new Track();
-                    allTracks.Add(track);
-                }
-
-                Talk currentTalk = queue.Dequeue();
-
-                if (!track.MorningSession.IsFull())
-                {
-                    if (track.MorningSession.Talks.Count == 0)
-                    {
-                        currentTalk.Start = track.MorningSession.Start;
-                        currentTalk.End = currentTalk.Start.Add(currentTalk.Duration);
-                        track.MorningSession.Talks.Add(currentTalk);
-                    }
-                    else
-                    {
-                        Talk lastTalkInTrack = track.MorningSession.Talks.Last();
-                        currentTalk.Start = lastTalkInTrack.End;
-                        currentTalk.End = currentTalk.Start.Add(currentTalk.Duration);
-                        if (track.MorningSession.IsValid(currentTalk))
-                        {
-                            track.MorningSession.Talks.Add(currentTalk);
-                        }
-                        else
-                        {
-                            if (mightNeedToBeRemovedTalk == null)
-                            {
-                                mightNeedToBeRemovedTalk = currentTalk;
-                                currentTalk.Start = default(TimeSpan);
-                                currentTalk.End = default(TimeSpan);
-                                queue.Enqueue(currentTalk);
-                                continue;
-                            }
-
-                            if (mightNeedToBeRemovedTalk == currentTalk)
-                            {
-                                Talk lastTalk = track.MorningSession.Talks.Last();
-                                lastTalk.Start = default(TimeSpan);
-                                lastTalk.End = default(TimeSpan);
-                                track.MorningSession.Talks.RemoveAt(track.MorningSession.Talks.Count - 1);
-                                queue.Enqueue(lastTalk);
-                            }
-
-                            currentTalk.Start = default(TimeSpan);
-                            currentTalk.End = default(TimeSpan);
-                            queue.Enqueue(currentTalk);
-                        }
-                    }
-                }
-                else
-                {
-                    if (track.AfternoonSession.Talks.Count == 0)
-                    {
-                        currentTalk.Start = track.AfternoonSession.Start;
-                        currentTalk.End = currentTalk.Start + currentTalk.Duration;
-                        track.AfternoonSession.Talks.Add(currentTalk);
-                    }
-                    else
-                    {
-                        Talk lastTalkInTrack = track.AfternoonSession.Talks.Last();
-                        currentTalk.Start = lastTalkInTrack.End;
-                        currentTalk.End = currentTalk.Start + currentTalk.Duration;
-                        if (track.AfternoonSession.IsValid(currentTalk))
-                        {
-                            track.AfternoonSession.Talks.Add(currentTalk);
-                        }
-                        else
-                        {
-                            currentTalk.Start = default(TimeSpan);
-                            currentTalk.End = default(TimeSpan);
-                            queue.Enqueue(currentTalk);
-                        }
-                    }
-                }
-            }
-
-            foreach (var item in allTalks)
-            {
-                if (item.IsLightning)
-                    queue.Enqueue(item);
-            }
-
-            while (queue.Count > 0)
-            {
-                Talk currentTalk = queue.Dequeue();
-                var currentTrack = allTracks.FirstOrDefault(t => !t.IsFull);
-                currentTalk.Start = currentTrack.AfternoonSession.Talks.Last().End;
-                currentTrack.AfternoonSession.Talks.Add(currentTalk);
-                currentTrack.NetworkEvent.Start = TimeSpan.FromHours(17);
-            }
-
-            foreach (var tempTrack in allTracks)
-            {
-                if (tempTrack.NetworkEvent.Start.Equals(default(TimeSpan)))
-                {
-                    tempTrack.NetworkEvent.Start = tempTrack.AfternoonSession.Talks.Last().End;
-                }
-            }
-
-            return allTracks;
         }
     }
 }
