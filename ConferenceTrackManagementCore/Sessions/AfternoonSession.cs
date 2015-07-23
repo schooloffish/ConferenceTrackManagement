@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace ConferenceTrackManagementCore
 {
@@ -12,13 +11,12 @@ namespace ConferenceTrackManagementCore
 
         public override bool IsFull()
         {
-            Talk lastTalk = Talks.LastOrDefault();
-            return lastTalk != null && (lastTalk.End == TimeSpan.FromHours(17) || lastTalk.IsLightning);
+            return LastTalk != null && (LastTalk.End == TimeSpan.FromHours(17) || LastTalk.IsLightning);
         }
 
         public override bool IsValid(Talk talk)
         {
-            return talk.End <= TimeSpan.FromHours(17);
+            return talk.IsLightning || talk.End <= TimeSpan.FromHours(17);
         }
     }
 }

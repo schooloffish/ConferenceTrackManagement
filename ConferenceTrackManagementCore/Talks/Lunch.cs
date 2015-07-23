@@ -15,7 +15,7 @@ namespace ConferenceTrackManagementCore
         {
             DateTime time = DateTime.ParseExact(Start.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture);
 
-            return string.Format("{0} {1}", time.ToString("hh:mmtt", CultureInfo.CreateSpecificCulture("en-us")), Title);
+            return string.Format("{0} {1}"+Environment.NewLine, time.ToString("hh:mmtt", CultureInfo.CreateSpecificCulture("en-us")), Title);
         }
     }
 }

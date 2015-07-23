@@ -6,18 +6,19 @@ namespace ConferenceTrackManagementCore
 {
     public class Talk
     {
-        private TimeSpan duration;
-        private TimeSpan start;
         private string title;
-        private bool isLightning;       
+        private TimeSpan start;
+        private TimeSpan duration;
+        private bool isLightning;
 
         public static Talk Init(string proposal)
         {
             var tempArray = proposal.Split(' ').ToList();
-            string duration = tempArray.Last();
-            TimeSpan tempDuration = default(TimeSpan);
+            string duration = tempArray.LastOrDefault();
             tempArray.RemoveAt(tempArray.Count - 1);
             string tempTitle = string.Join(" ", tempArray);
+            TimeSpan tempDuration = default(TimeSpan);
+
             bool tempIsLightning = duration == "lightning";
             if (tempIsLightning)
             {
@@ -53,7 +54,7 @@ namespace ConferenceTrackManagementCore
             get
             {
                 return Start.Add(Duration);
-            }            
+            }
         }
 
         public string Title
@@ -64,20 +65,15 @@ namespace ConferenceTrackManagementCore
         public bool IsLightning
         {
             get { return isLightning; }
-            set { isLightning = value; }
         }
 
         public override string ToString()
         {
-            return isLightning ? string.Format("{0} {1} lightning", GetStartTimeForDisplay(start), title)
-                : string.Format("{0} {1} {2}min", GetStartTimeForDisplay(start), title, duration.TotalMinutes);
+
+
+            return isLightning ? string.Format("{0} {1} lightning", start.ToFormattedString(), title)
+                : string.Format("{0} {1} {2}min", start.ToFormattedString(), title, duration.TotalMinutes);
         }
 
-        public string GetStartTimeForDisplay(TimeSpan start)
-        {
-            DateTime time = DateTime.ParseExact(start.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture);
-
-            return time.ToString("hh:mmtt", CultureInfo.CreateSpecificCulture("en-us"));
-        }
     }
 }

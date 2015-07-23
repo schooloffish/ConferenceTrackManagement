@@ -13,8 +13,7 @@ namespace ConferenceTrackManagementCore
 
         public override bool IsFull()
         {
-            Talk lastTalk = Talks.LastOrDefault();
-            return lastTalk != null && (lastTalk.End == this.End || lastTalk.IsLightning);
+            return LastTalk != null && (LastTalk.End == this.End || LastTalk.IsLightning);
         }
 
         public override bool IsValid(Talk talk)

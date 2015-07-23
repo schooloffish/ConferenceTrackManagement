@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace ConferenceTrackManagement
 {
@@ -37,7 +38,7 @@ namespace ConferenceTrackManagement
 
         private static void PrintTracks(Collection<Talk> allTalks)
         {
-            var tracks = Track.GenerateTracks(allTalks);
+            var tracks = TrackHelper.GenerateTracks(allTalks);
             for (int i = 0; i < tracks.Count; i++)
             {
                 Console.WriteLine(string.Format("Track {0}:", (i + 1).ToString()));

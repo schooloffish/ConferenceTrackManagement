@@ -10,7 +10,7 @@ namespace ConferenceTrackManagementCore
         private TimeSpan start;
         private TimeSpan end;
         private Collection<Talk> talks;
-        
+
         public Session()
         {
             this.talks = new Collection<Talk>();
@@ -28,9 +28,9 @@ namespace ConferenceTrackManagementCore
             set { end = value; }
         }
 
-        public Collection<Talk> Talks
+        public Talk LastTalk
         {
-            get { return talks; }
+            get { return this.talks.LastOrDefault(); }
         }
 
         public abstract bool IsValid(Talk talk);
@@ -38,17 +38,18 @@ namespace ConferenceTrackManagementCore
 
         public Talk SpliceLastTalk()
         {
-            Talk lastTalk = this.Talks.Last();
-            lastTalk.Start = default(TimeSpan);
-            this.Talks.RemoveAt(this.Talks.Count - 1);
-
-            return lastTalk;
+            if (LastTalk != null)
+            {
+                LastTalk.Start = default(TimeSpan);
+                this.talks.RemoveAt(this.talks.Count - 1);
+            }
+            return LastTalk;
         }
 
         public bool AddTalk(Talk newTalk)
         {
             bool result = false;
-            Talk lastTalkInTrack = Talks.LastOrDefault();
+            Talk lastTalkInTrack = talks.LastOrDefault();
 
             if (lastTalkInTrack == null)
             {
@@ -61,7 +62,7 @@ namespace ConferenceTrackManagementCore
 
             if (IsValid(newTalk))
             {
-                Talks.Add(newTalk);
+                talks.Add(newTalk);
                 result = true;
             }
 

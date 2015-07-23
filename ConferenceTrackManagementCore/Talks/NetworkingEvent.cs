@@ -11,7 +11,7 @@ namespace ConferenceTrackManagementCore
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", GetStartTimeForDisplay(Start), Title);
+            return string.Format("{0} {1}", Start.ToFormattedString(), Title);
         }
     }
 }
