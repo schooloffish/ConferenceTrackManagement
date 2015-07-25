@@ -12,7 +12,7 @@ namespace ConferenceTrackManagementCore.Tests
         [TestMethod()]
         public void InitSuccessfullyTest()
         {
-            Talk talk = Talk.Init(testProposal);
+            Talk talk = Talk.Load(testProposal);
 
             Assert.IsFalse(talk.IsLightning);
             Assert.AreEqual("Common Ruby Errors", talk.Title);
@@ -22,7 +22,7 @@ namespace ConferenceTrackManagementCore.Tests
         [TestMethod()]
         public void InitLightningTalkTest()
         {
-            Talk talk = Talk.Init(lightningProposal);
+            Talk talk = Talk.Load(lightningProposal);
 
             Assert.IsTrue(talk.IsLightning);
         }
@@ -33,7 +33,7 @@ namespace ConferenceTrackManagementCore.Tests
         {
             string proposal = "Common";
 
-            Talk talk = Talk.Init(proposal);
+            Talk talk = Talk.Load(proposal);
         }
 
         [TestMethod()]
@@ -42,13 +42,13 @@ namespace ConferenceTrackManagementCore.Tests
         {
             string proposal = "Common Ruby Errors abcmin";
 
-            Talk talk = Talk.Init(proposal);
+            Talk talk = Talk.Load(proposal);
         }
 
         [TestMethod()]
         public void NonLightningToStringTest()
         {
-            Talk talk = Talk.Init(testProposal);
+            Talk talk = Talk.Load(testProposal);
             talk.Start = new TimeSpan(9, 0, 0);
 
             string expectedValue1 = "09:00AM Common Ruby Errors 45min";
@@ -67,7 +67,7 @@ namespace ConferenceTrackManagementCore.Tests
         [TestMethod()]
         public void LightningToStringTest()
         {
-            Talk talk = Talk.Init(lightningProposal);
+            Talk talk = Talk.Load(lightningProposal);
             talk.Start = new TimeSpan(9, 0, 0);
 
             string expectedValue1 = "09:00AM Rails for Python Developers lightning";

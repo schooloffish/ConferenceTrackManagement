@@ -10,7 +10,7 @@ namespace ConferenceTrackManagementCore
     {
         public static Collection<Track> GenerateTracks(Collection<Talk> allTalks)
         {
-            Collection<Track> allTracks = new Collection<Track>();
+            Collection<Track> resultTracks = new Collection<Track>();
 
             Queue<Talk> queue = new Queue<Talk>();
             foreach (var item in allTalks)
@@ -19,29 +19,30 @@ namespace ConferenceTrackManagementCore
                     queue.Enqueue(item);
             }
 
-            Track track = null;
+            Track currentTrack = null;
             Talk mismatchedTalk = null;
             while (queue.Count > 0)
             {
-                if (track != null && track.IsFull())
+                if (currentTrack != null && currentTrack.IsFull())
                 {
-                    track = null;
+                    currentTrack = null;
                 }
 
-                if (track == null)
+                if (currentTrack == null)
                 {
-                    track = new Track();
-                    allTracks.Add(track);
+                    currentTrack = new Track();
+                    resultTracks.Add(currentTrack);
                 }
 
                 Talk currentTalk = queue.Dequeue();
 
-                if (!track.AddTalk(currentTalk))
+                if (!currentTrack.AddTalk(currentTalk))
                 {
                     if (mismatchedTalk == currentTalk)
                     {
-                        Talk lastTalk = track.SpliceLastTalk();
+                        Talk lastTalk = currentTrack.SpliceLastTalk();
                         queue.Enqueue(lastTalk);
+                        mismatchedTalk = null;
                     }
                     else if (mismatchedTalk == null)
                     {
@@ -59,14 +60,15 @@ namespace ConferenceTrackManagementCore
 
             while (queue.Count > 0)
             {
-                Talk currentTalk = queue.Dequeue();
-                var currentTrack = allTracks.FirstOrDefault(t => !t.IsFull());
-                currentTalk.Start = currentTrack.AfternoonSession.LastTalk.End;
-                currentTrack.AfternoonSession.AddTalk(currentTalk);
-                currentTrack.NetworkEvent.Start = new TimeSpan(16, 30, 0);
+                Talk currentLightningTalk = queue.Dequeue();
+                currentTrack = resultTracks.FirstOrDefault(t => !t.IsFull());
+                if (currentTrack != null && currentTrack.AddTalk(currentLightningTalk))
+                {
+                    currentTrack.NetworkEvent.Start = new TimeSpan(17, 0, 0);
+                }
             }
 
-            foreach (var tempTrack in allTracks)
+            foreach (var tempTrack in resultTracks)
             {
                 if (tempTrack.NetworkEvent.Start.Equals(default(TimeSpan)))
                 {
@@ -74,7 +76,7 @@ namespace ConferenceTrackManagementCore
                 }
             }
 
-            return allTracks;
+            return resultTracks;
         }
 
         public static string ToFormattedString(this TimeSpan start)

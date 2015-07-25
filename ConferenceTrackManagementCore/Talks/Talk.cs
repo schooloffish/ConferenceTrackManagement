@@ -10,7 +10,7 @@ namespace ConferenceTrackManagementCore
         private TimeSpan start;
         private TimeSpan duration;
 
-        public static Talk Init(string proposal)
+        public static Talk Load(string proposal)
         {
             var tempArray = proposal.Split(' ').ToList();
             if (tempArray.Count > 1)

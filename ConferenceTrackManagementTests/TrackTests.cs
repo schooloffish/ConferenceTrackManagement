@@ -46,7 +46,6 @@ namespace ConferenceTrackManagementCore.Tests
             Talk actualTalk = track.SpliceLastTalk();
 
             Assert.AreEqual(talk, actualTalk);
-
         }
 
         [TestMethod()]
@@ -64,7 +63,7 @@ namespace ConferenceTrackManagementCore.Tests
                     {
                         try
                         {
-                            allTalks.Add(Talk.Init(currentLine));
+                            allTalks.Add(Talk.Load(currentLine));
                         }
                         catch (Exception ex)
                         {
