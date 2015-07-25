@@ -20,10 +20,10 @@ namespace ConferenceTrackManagementCore
             }
 
             Track track = null;
-            Talk mightNeedToBeRemovedTalk = null;
+            Talk mismatchedTalk = null;
             while (queue.Count > 0)
             {
-                if (track != null && track.IsFull)
+                if (track != null && track.IsFull())
                 {
                     track = null;
                 }
@@ -38,14 +38,14 @@ namespace ConferenceTrackManagementCore
 
                 if (!track.AddTalk(currentTalk))
                 {
-                    if (mightNeedToBeRemovedTalk == currentTalk)
+                    if (mismatchedTalk == currentTalk)
                     {
                         Talk lastTalk = track.SpliceLastTalk();
                         queue.Enqueue(lastTalk);
                     }
-                    else if (mightNeedToBeRemovedTalk == null)
+                    else if (mismatchedTalk == null)
                     {
-                        mightNeedToBeRemovedTalk = currentTalk;
+                        mismatchedTalk = currentTalk;
                     }
                     queue.Enqueue(currentTalk);
                 }
@@ -60,7 +60,7 @@ namespace ConferenceTrackManagementCore
             while (queue.Count > 0)
             {
                 Talk currentTalk = queue.Dequeue();
-                var currentTrack = allTracks.FirstOrDefault(t => !t.IsFull);
+                var currentTrack = allTracks.FirstOrDefault(t => !t.IsFull());
                 currentTalk.Start = currentTrack.AfternoonSession.LastTalk.End;
                 currentTrack.AfternoonSession.AddTalk(currentTalk);
                 currentTrack.NetworkEvent.Start = new TimeSpan(16, 30, 0);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace ConferenceTrackManagementCore
 {
@@ -7,18 +6,18 @@ namespace ConferenceTrackManagementCore
     {
         public MorningSession()
         {
-            this.Start = TimeSpan.FromHours(9);
-            this.End = TimeSpan.FromHours(12);
+            Start = TimeSpan.FromHours(9);
+            End = TimeSpan.FromHours(12);
         }
 
         public override bool IsFull()
         {
-            return LastTalk != null && (LastTalk.End == this.End || LastTalk.IsLightning);
+            return LastTalk != null && (LastTalk.End == End || LastTalk.IsLightning);
         }
 
         public override bool IsValid(Talk talk)
         {
-            return talk.End <= this.End;
+            return talk.End <= End;
         }
     }
 }

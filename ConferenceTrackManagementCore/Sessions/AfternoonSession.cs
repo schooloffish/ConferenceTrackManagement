@@ -6,7 +6,7 @@ namespace ConferenceTrackManagementCore
     {
         public AfternoonSession()
         {
-            this.Start = TimeSpan.FromHours(13);
+            Start = TimeSpan.FromHours(13);
         }
 
         public override bool IsFull()

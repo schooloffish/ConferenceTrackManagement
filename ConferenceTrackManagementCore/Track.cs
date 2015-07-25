@@ -5,9 +5,9 @@ namespace ConferenceTrackManagementCore
 {
     public class Track
     {
-        private AfternoonSession afternoonSession;
         private MorningSession morningSession;
         private Lunch lunch;
+        private AfternoonSession afternoonSession;
         private NetworkingEvent networkEvent;
 
         public Track()
@@ -18,27 +18,24 @@ namespace ConferenceTrackManagementCore
             this.networkEvent = new NetworkingEvent();
         }
 
-        public AfternoonSession AfternoonSession
-        {
-            get { return afternoonSession; }
-        }
-
         public MorningSession MorningSession
         {
             get { return morningSession; }
         }
-        
+
         public NetworkingEvent NetworkEvent
         {
             get { return networkEvent; }
         }
 
-        public bool IsFull
+        public AfternoonSession AfternoonSession
         {
-            get
-            {
-                return afternoonSession.IsFull() && morningSession.IsFull();
-            }
+            get { return afternoonSession; }
+        }
+
+        public bool IsFull()
+        {
+            return afternoonSession.IsFull() && morningSession.IsFull();
         }
 
         public bool AddTalk(Talk currentTalk)

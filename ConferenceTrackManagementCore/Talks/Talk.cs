@@ -1,34 +1,49 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 
 namespace ConferenceTrackManagementCore
 {
     public class Talk
     {
+        private bool isLightning;
         private string title;
         private TimeSpan start;
         private TimeSpan duration;
-        private bool isLightning;
 
         public static Talk Init(string proposal)
         {
             var tempArray = proposal.Split(' ').ToList();
-            string duration = tempArray.LastOrDefault();
-            tempArray.RemoveAt(tempArray.Count - 1);
-            string tempTitle = string.Join(" ", tempArray);
-            TimeSpan tempDuration = default(TimeSpan);
-
-            bool tempIsLightning = duration == "lightning";
-            if (tempIsLightning)
+            if (tempArray.Count > 1)
             {
-                tempDuration = TimeSpan.FromMinutes(5);
+                string durationText = tempArray.LastOrDefault().ToUpperInvariant();
+                tempArray.RemoveAt(tempArray.Count - 1);
+
+                string tempTitle = string.Join(" ", tempArray);
+                TimeSpan duration = default(TimeSpan);
+
+                bool tempIsLightning = durationText == "LIGHTNING";
+                if (tempIsLightning)
+                {
+                    duration = TimeSpan.FromMinutes(5);
+                }
+                else
+                {
+                    int durationValue;
+                    if (int.TryParse(durationText.Replace("MIN", ""), out durationValue))
+                    {
+                        duration = TimeSpan.FromMinutes(durationValue);
+                    }
+                    else
+                    {
+                        throw new InvalidCastException("'" + durationText + "'" + " contains invalid characters.");
+                    }
+                }
+                return new Talk(tempTitle, duration, tempIsLightning);
             }
             else
             {
-                tempDuration = TimeSpan.FromMinutes(int.Parse(duration.Replace("min", "")));
+                throw new FormatException("Invalid proposal.");
             }
-            return new Talk(tempTitle, tempDuration, tempIsLightning);
         }
 
         public Talk(string title, TimeSpan duration, bool isLightning = false)
@@ -69,11 +84,8 @@ namespace ConferenceTrackManagementCore
 
         public override string ToString()
         {
-
-
             return isLightning ? string.Format("{0} {1} lightning", start.ToFormattedString(), title)
                 : string.Format("{0} {1} {2}min", start.ToFormattedString(), title, duration.TotalMinutes);
         }
-
     }
 }
