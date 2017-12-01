@@ -8,6 +8,7 @@ build/*.*
 /build
 # testing
 /coverage
+/.vs
 
 # production
 /build

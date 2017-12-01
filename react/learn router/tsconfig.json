@@ -11,6 +11,7 @@
         "./src/**/*"
     ],
     "types":[
+        "react-dom",
         "react",
         "react-router-dom"
     ]
