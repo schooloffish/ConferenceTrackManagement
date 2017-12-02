@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-export default class Sentense extends React.Component {
+export default class Sentense extends React.Component<{}, {}> {
     audio: HTMLAudioElement;
     vocabularies: string[];
     icon: string;

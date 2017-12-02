@@ -13,6 +13,7 @@
     "types":[
         "react-dom",
         "react",
-        "react-router-dom"
+        "react-router-dom",
+        "react-router"
     ]
 }

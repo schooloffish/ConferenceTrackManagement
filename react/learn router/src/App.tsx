@@ -3,6 +3,7 @@ import * as ReactDom from "react-router-dom";
 import Category from "./Category";
 import Sentence from "./Sentence";
 import WordList from "./WordList";
+import Phrase from "./Phrase";
 
 const Home: any = () => (
   <div>
@@ -25,6 +26,7 @@ const App: any = () => (
         <li><ReactDom.Link to="/category/clothes">Category:clothes</ReactDom.Link> </li>
         <li><ReactDom.Link to="/wordList">WordList</ReactDom.Link> </li>
         <li><ReactDom.Link to="/sentence">Sentence</ReactDom.Link> </li>
+        <li><ReactDom.Link to="/phrase">Phrase</ReactDom.Link> </li>
       </ul>
     </nav>
 
@@ -34,6 +36,7 @@ const App: any = () => (
       <ReactDom.Route path="/products" component={Products} />
       <ReactDom.Route path="/sentence" component={Sentence} />
       <ReactDom.Route path="/wordList" component={WordList} />
+      <ReactDom.Route path="/phrase" component={Phrase} />
     </ReactDom.Switch>
   </div>
 );
