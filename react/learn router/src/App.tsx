@@ -4,6 +4,7 @@ import Category from "./Category";
 import Sentence from "./Sentence";
 import WordList from "./WordList";
 import Phrase from "./Phrase";
+import { Button } from "reactstrap";
 
 const Home: any = () => (
   <div>
@@ -29,7 +30,9 @@ const App: any = () => (
         <li><ReactDom.Link to="/phrase">Phrase</ReactDom.Link> </li>
       </ul>
     </nav>
-
+    <button className="btn btn-primary">Primary</button>
+    <button className="btn btn-secondary">Primary</button>
+    <Button color="danger">danger</Button>
     <ReactDom.Switch>
       <ReactDom.Route exact={true} path="/" component={Home} />
       <ReactDom.Route path="/category/:name" component={Category} />
