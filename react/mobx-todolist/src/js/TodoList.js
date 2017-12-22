@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { computed, observable, useStrict, action } from 'mobx';
 
 @observer
 export default class TodoList extends React.Component {
@@ -14,7 +15,7 @@ export default class TodoList extends React.Component {
         this.props.store.filter = e.target.value;
     }
 
-    toggleComplete(todo) {
+    @action toggleComplete(todo) {
         todo.complete = !todo.complete;
     }
 
