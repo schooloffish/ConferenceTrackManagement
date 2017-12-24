@@ -1,17 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-@observer
+@observer(['todoStore'])
 export default class TodoList extends React.Component {
     createNew(e) {
         if (e.which === 13) {
-            this.props.store.createTodo(e.target.value);
+            this.props.todoStore.createTodo(e.target.value);
             e.target.value = '';
         }
     }
 
     filter(e) {
-        this.props.store.filter = e.target.value;
+        this.props.todoStore.filter = e.target.value;
     }
 
     toggleComplete(todo) {
@@ -19,7 +19,7 @@ export default class TodoList extends React.Component {
     }
 
     render() {
-        const { clearComplete, filter, filteredTodos, todos } = this.props.store;
+        const { clearComplete, filter, filteredTodos, todos } = this.props.todoStore;
 
         const todoLis = filteredTodos.map(todo => (
             <li key={todo.id}>
