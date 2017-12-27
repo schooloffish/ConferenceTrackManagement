@@ -11,7 +11,7 @@ export default class TodoList extends React.Component {
         }
     }
 
-    filter(e) {
+    @action filter(e) {
         this.props.todoStore.filter = e.target.value;
     }
 

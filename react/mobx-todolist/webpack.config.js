@@ -1,11 +1,11 @@
-var debug = process.env.NODE_ENV !== 'production';
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 module.exports = {
     context: path.join(__dirname, 'src'),
-    devTools: debug ? "inline-sourcemap" : null,
-    entry: './js/main.js',
+    devTools: "inline-sourcemap",
+    entry: { 'app': './main.js' },
     module: {
         loaders: [
             {
@@ -18,12 +18,17 @@ module.exports = {
         ]
     },
     output: {
+        filename: "[name].js",
+        chunkFilename: '[id].chunk.js',
         path: path.join(__dirname, 'dist'),
-        filename: 'main.min.js'
     },
-    plugins: debug ? [] : [
+    plugins: [
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({ mangle: false, sourceMap: false }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: ['app']
+        }),
+        new HtmlWebpackPlugin({ template: './index.html' })
     ]
 };
