@@ -5,15 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"webpack-dev-server --content-base src --inline --hot"
+    "start": "webpack-dev-server --content-base src --inline --hot",
+    "webpack": "webpack",
+    "server": "lite-server -c lite-server-config.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lite-server": "^2.3.0",
     "mobx": "^2.3.7",
     "mobx-react": "^3.5.1",
     "react": "^15.2.1",
-    "react-dom": "^15.3.0"
+    "react-dom": "^15.3.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

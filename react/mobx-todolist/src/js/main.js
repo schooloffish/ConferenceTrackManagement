@@ -1,15 +1,13 @@
 import '../css/main.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TodoStore from './TodoStore';
-import TodoList from './TodoList';
-import { Provider } from 'mobx-react';
+import App from './app';
+import { BrowserRouter } from 'react-router-dom';
 
 const app = document.getElementById('app');
-const stores = { todoStore: TodoStore };
 
 ReactDOM.render(
-    <Provider {...stores}>
-        <TodoList/>
-    </Provider>
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
     , app);
